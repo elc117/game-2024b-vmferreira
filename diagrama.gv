@@ -1,0 +1,125 @@
+digraph DiagramaDeClasses {
+	graph [
+		label="Diagrama de Classes"
+		labelloc="t"
+		fontname="Helvetica,Arial,sans-serif"
+	]
+	node [
+		fontname="Helvetica,Arial,sans-serif"
+		shape=record
+		style=filled
+		fillcolor=gray95
+	]
+	edge [fontname="Helvetica,Arial,sans-serif"]
+	edge [arrowhead=vee style=dashed]
+
+	Main [
+		shape=plain
+		label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+			<tr> <td> <b>Main</b> </td> </tr>
+			<tr> <td>
+				<table border="0" cellborder="0" cellspacing="0" >
+					<tr> <td align="left" >+ property</td> </tr>
+					<tr> <td port="am" align="left" >- assetManager : AssetManager       </td> </tr>
+					<tr> <td port="cs" align="left" >- currentState : State   </td> </tr>
+				</table>
+			</td> </tr>
+			<tr> <td align="left">+ create<br align="left"/>+ resize<br align="left"/>+ render<br align="left"/>- update<br align="left"/>- draw<br align="left"/></td> </tr>
+		</table>>
+	]
+
+	
+	State [
+		shape=plain
+		label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+			<tr> <td> <b>State</b> </td> </tr>
+			<tr> <td>
+				<table border="0" cellborder="0" cellspacing="0" >
+					<tr> <td align="left" >+ property</td> </tr>
+					<tr> <td port="cs" align="left" >- currentState : State   </td> </tr>
+				</table>
+			</td> </tr>
+			<tr> <td align="left">+ onEnter<br align="left"/>+ onLeave<br align="left"/>+ onUpdate<br align="left"/>+ onDraw<br align="left"/></td> </tr>
+		</table>>
+	]
+	
+	StateMenu [
+		shape=plain
+		label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+			<tr> <td> <b>StateMenu</b> </td> </tr>
+			<tr> <td>
+				<table border="0" cellborder="0" cellspacing="0" >
+					<tr> <td align="left" >- background : Texture</td> </tr>
+				</table>
+			</td> </tr>
+			<tr> <td align="left"></td> </tr>
+		</table>>
+	]
+	
+	StatePlay  [
+		shape=plain
+		label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+			<tr> <td> <b>StatePlay</b> </td> </tr>
+			<tr> <td>
+				<table border="0" cellborder="0" cellspacing="0" >
+					<tr> <td port="el" align="left" >- entityList : ArrayList(Entity)   </td> </tr>
+					<tr> <td port="sc" align="left" >- currentScreen : Screen   </td> </tr>
+				</table>
+			</td> </tr>
+			<tr> <td align="left"></td> </tr>
+		</table>>
+	]
+	
+	StateEnd  [
+		shape=plain
+		label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+			<tr> <td> <b>StateEnd</b> </td> </tr>
+			<tr> <td>
+				<table border="0" cellborder="0" cellspacing="0" >
+					<tr> <td align="left" >- </td> </tr>
+				</table>
+			</td> </tr>
+			<tr> <td align="left"></td> </tr>
+		</table>>
+	]
+	
+	Entity  [
+		shape=plain
+		label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+			<tr> <td> <b>Entity</b> </td> </tr>
+			<tr> <td>
+				<table border="0" cellborder="0" cellspacing="0" >
+					<tr> <td align="left" >- pos : Vector2 </td> </tr>
+					<tr> <td align="left" >- texture : Texture </td> </tr>
+				</table>
+			</td> </tr>
+			<tr> <td align="left">+ update<br align="left"/>+ draw<br align="left"/>+ interact<br align="left"/></td> </tr>
+		</table>>
+	]
+	
+	Screen [
+	    shape=plain
+		label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+			<tr> <td> <b>Screen</b> </td> </tr>
+			<tr> <td>
+				<table border="0" cellborder="0" cellspacing="0" >
+					<tr> <td align="left" >- background : Texture </td> </tr>
+					<tr> <td align="left" >- Exits : String(4) </td> </tr>
+				</table>
+			</td> </tr>
+			<tr> <td align="left">+ update<br align="left"/>+ draw<br align="left"/>+ interact<br align="left"/></td> </tr>
+		</table>>
+	]
+	
+	edge [dir=back arrowtail=diamond]
+	Main:cs -> State
+	StatePlay:el -> Entity
+	StatePlay:sc -> Screen
+
+	edge [dir=back arrowtail=empty]
+	State -> StateMenu
+	State -> StatePlay
+	State -> StateEnd
+	
+
+}
