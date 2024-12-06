@@ -5,7 +5,13 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Entity {
   protected float x, y;
-  private Texture texture; 
+  protected Texture texture;
+
+  public Entity() {
+    x = 320;
+    y = 240;
+    texture = new Texture("libgdx.png");
+  }
 
   public void update(float dt) {
     return;
