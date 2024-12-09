@@ -28,7 +28,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
     player.update(dt);
   }
   private void draw() {
-    ScreenUtils.clear(0.80f, 0.15f, 0.75f, 1f);
+    ScreenUtils.clear(0.40f, 0.15f, 0.35f, 1f);
     //view.apply();
     //batch.setProjectionMatrix(view.getCamera().combined);
     batch.begin();
@@ -67,6 +67,8 @@ public class Main extends ApplicationAdapter implements InputProcessor{
   }
 
 
+
+// Unused input handling methods. Need to be implemented due to the InputProcessor interface
   @Override public boolean mouseMoved (int screenX, int screenY) {
     return false;
   }
