@@ -10,12 +10,14 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import paradigmas.tfinal.PlayerEntity;
+import paradigmas.tfinal.DialogueBox;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter implements InputProcessor{
   private SpriteBatch batch;
   private Texture image;
   private FitViewport view;
+  private DialogueBox dialogueBox;
 
   PlayerEntity player;
 
@@ -34,6 +36,8 @@ public class Main extends ApplicationAdapter implements InputProcessor{
     batch.begin();
     player.draw(batch);
     batch.end();
+
+    dialogueBox.draw();
   }
 
 
@@ -44,6 +48,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
     Gdx.graphics.setWindowedMode(640, 480);
     player = new PlayerEntity();
     view = new FitViewport(640, 480);
+    dialogueBox = new DialogueBox();
     Gdx.input.setInputProcessor(this);
   }
 
