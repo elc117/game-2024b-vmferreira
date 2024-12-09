@@ -7,7 +7,13 @@ import com.badlogic.gdx.math.Vector2;
 public class Entity {
   protected Vector2 position;
   protected Texture texture;
+  protected DialogueBox dialogueBox;
 
+  public Entity(DialogueBox dBox) {
+    position = new Vector2(0, 0);
+    texture = new Texture("libgdx.png");
+    dialogueBox = dBox;
+  }
   public Entity() {
     position = new Vector2(0, 0);
     texture = new Texture("libgdx.png");

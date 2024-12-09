@@ -23,13 +23,14 @@ public class PlayerEntity extends Entity {
     // Move the player to the clicked position
     // vel = |(movePos - position)| * (dt * SPEED)
     Vector2 delta = new Vector2(movePos).sub(position);
-    if (delta.len2() < 1.0f) {
-      moving = false;
-      if (targetEntity != null) {
-        targetEntity.interact();
-      }
-    }
     if (moving) {
+      if (delta.len2() < 1.0f) {
+        moving = false;
+        if (targetEntity != null) {
+          targetEntity.interact();
+          targetEntity = null;
+        }
+      }
       delta.nor().scl(dt * SPEED);
       position.add(delta);
     }

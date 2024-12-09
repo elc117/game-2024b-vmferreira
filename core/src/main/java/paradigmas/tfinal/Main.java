@@ -10,6 +10,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import paradigmas.tfinal.PlayerEntity;
+import paradigmas.tfinal.InteractEntity;
 import paradigmas.tfinal.DialogueBox;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -20,6 +21,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
   private DialogueBox dialogueBox;
 
   PlayerEntity player;
+  InteractEntity tree;
 
   private void update(float dt) {
     if (Gdx.input.isTouched()) {
@@ -34,6 +36,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
     //view.apply();
     //batch.setProjectionMatrix(view.getCamera().combined);
     batch.begin();
+    tree.draw(batch);
     player.draw(batch);
     batch.end();
 
@@ -51,6 +54,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
     dialogueBox = new DialogueBox();
     dialogueBox.setText("Hello, World!\nDialogue Box Test");
     Gdx.input.setInputProcessor(this);
+    tree = new InteractEntity(400, 200, dialogueBox);
   }
 
   @Override
@@ -72,7 +76,11 @@ public class Main extends ApplicationAdapter implements InputProcessor{
       dialogueBox.disable();
       return true;
     }
-    player.onClick((float)screenX, 480.0f - (float)screenY);
+    if (tree.mouseOver(screenX, 480 - screenY)) {
+      player.onClick(tree);
+    } else {
+      player.onClick((float)screenX, 480.0f - (float)screenY);
+    }
     return true;
   }
 
