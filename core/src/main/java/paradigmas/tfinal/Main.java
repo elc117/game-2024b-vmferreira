@@ -49,6 +49,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
     player = new PlayerEntity();
     view = new FitViewport(640, 480);
     dialogueBox = new DialogueBox();
+    dialogueBox.setText("Hello, World!\nDialogue Box Test");
     Gdx.input.setInputProcessor(this);
   }
 
@@ -67,6 +68,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 
   @Override
   public boolean touchDown(int screenX, int screenY, int ptr, int btn) {
+    if (dialogueBox.isEnabled()) {
+      dialogueBox.disable();
+      return true;
+    }
     player.onClick((float)screenX, 480.0f - (float)screenY);
     return true;
   }
