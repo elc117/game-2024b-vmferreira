@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import paradigmas.tfinal.PlayerEntity;
 import paradigmas.tfinal.InteractEntity;
 import paradigmas.tfinal.QuizEntity;
+import paradigmas.tfinal.InfoEntity;
 import paradigmas.tfinal.Quiz;
 import paradigmas.tfinal.DialogueBox;
 
@@ -53,9 +54,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
     dialogueBox = new DialogueBox();
     dialogueBox.setText("Hello, World!\nDialogue Box Test");
     Gdx.input.setInputProcessor(this);
-    String[] answers = {"1", "2", "3", "4"};
 
-    Quiz quiz = new Quiz("What is 1 + 1\nextra text to make this\n quiz way bigger", answers, 1);
+    String[] answers = {"Acer Palmatum Thunb.", "Achillea millefolium L.", "Achyrocline Satureioides", "Agathis Robusta"};
+
+    Quiz quiz = new Quiz("Qual dessas plantas tem origem\nNo Capão, China e Coréia?", answers, 0);
     tree = new QuizEntity(400, 200, dialogueBox, quiz);
   }
   

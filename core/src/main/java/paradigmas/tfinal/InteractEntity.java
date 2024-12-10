@@ -38,6 +38,6 @@ public class InteractEntity extends Entity {
   }
 
   public void interact() {
-    dialogueBox.setText("This is a tree");
+    return;
   }
 }
