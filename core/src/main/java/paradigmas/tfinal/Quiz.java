@@ -18,4 +18,8 @@ public class Quiz {
     return answers[ind];
   }
 
+  public boolean checkAnswer(int answer) {
+    return answer == correctAnswer;
+  }
+
 }

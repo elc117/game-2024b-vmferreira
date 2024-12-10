@@ -87,26 +87,24 @@ public class DialogueBox {
     shapeRenderer.begin(ShapeType.Filled);
     shapeRenderer.setColor(Color.WHITE);
     shapeRenderer.rect(x-2, y-2 + 80, w+4, h+4);
-    shapeRenderer.rect(x-2, y-2 + 60, w+4, 18);
-    shapeRenderer.rect(x-2, y-2 + 40, w+4, 18);
-    shapeRenderer.rect(x-2, y-2 + 20, w+4, 18);
-    shapeRenderer.rect(x-2, y-2 + 00, w+4, 18);
+    for (int i = 0; i < 4; i++) {
+      shapeRenderer.rect(x-2, y -2 + 20*i, w+4, 20);
+    }
     shapeRenderer.end();
     shapeRenderer.begin(ShapeType.Line);
     shapeRenderer.setColor(Color.BLACK);
     shapeRenderer.rect(x, y + 80, w, h);
-    shapeRenderer.rect(x, y + 60, w, 16);
-    shapeRenderer.rect(x, y + 40, w, 16);
-    shapeRenderer.rect(x, y + 20, w, 16);
-    shapeRenderer.rect(x, y + 00, w, 16);
+    for (int i = 0; i < 4; i++) {
+      shapeRenderer.rect(x, y + 20*i, w, 16);
+    }
     shapeRenderer.end();
 
     batch.begin();
     font.draw(batch, layout, x + 3, y + h - 2 + 80);
-    font.draw(batch, quiz.getAnswer(0), x + 3, y + h - 4 + 60);
-    font.draw(batch, quiz.getAnswer(1), x + 3, y + h - 4 + 40);
-    font.draw(batch, quiz.getAnswer(2), x + 3, y + h - 4 + 20);
-    font.draw(batch, quiz.getAnswer(3), x + 3, y + h - 4 + 00);
+    for (int i = 0; i < 4; i++) {
+      layout.setText(font, quiz.getAnswer(i));
+      font.draw(batch, layout, x + 3, y + 16 - 4 + (i * 20));
+    }
     batch.end();
   }
 
@@ -129,5 +127,16 @@ public class DialogueBox {
 
   public void disable() {
     state = STATE_DISABLED;
+  }
+
+  public void interact(int mx, int my) {
+    if (state == STATE_TEXT) {
+      disable();
+      return;
+    }
+    if (state == STATE_QUIZ) {
+      disable();
+      return;
+    }
   }
 }

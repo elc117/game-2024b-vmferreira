@@ -26,11 +26,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
   InteractEntity tree;
 
   private void update(float dt) {
-    if (Gdx.input.isTouched()) {
-      System.out.println(Gdx.input.getX());
-      System.out.println(Gdx.input.getY());
-    }
-
     player.update(dt);
   }
   private void draw() {
@@ -58,7 +53,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
     Gdx.input.setInputProcessor(this);
     String[] answers = {"1", "2", "3", "4"};
 
-    Quiz quiz = new Quiz("What is 1 + 1", answers, 2);
+    Quiz quiz = new Quiz("What is 1 + 1\nextra text to make this\n quiz way bigger", answers, 2);
     tree = new QuizEntity(400, 200, dialogueBox, quiz);
   }
 
@@ -78,7 +73,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
   @Override
   public boolean touchDown(int screenX, int screenY, int ptr, int btn) {
     if (dialogueBox.isEnabled()) {
-      dialogueBox.disable();
+      dialogueBox.interact(screenX, 480 - screenY);
       return true;
     }
     if (tree.mouseOver(screenX, 480 - screenY)) {
