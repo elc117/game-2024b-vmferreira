@@ -15,7 +15,7 @@ public class PlayerEntity extends Entity {
     position = new Vector2(0, 0);
     movePos = new Vector2(0,0);
     texture = new Texture("player.png");
-    //size = new Vector2(texture.getWidth(), texture.getHeight());
+    size = new Vector2(texture.getWidth(), texture.getHeight());
     moving = false;
   }
   

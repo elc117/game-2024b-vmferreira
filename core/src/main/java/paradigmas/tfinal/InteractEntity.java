@@ -22,7 +22,7 @@ public class InteractEntity extends Entity {
   }
 
   public boolean mouseOver(float mouseX, float mouseY) {
-    float dx = mouseX - (position.x);
+    float dx = mouseX - (position.x - size.x/2.0f);
     float dy = mouseY - (position.y);
     // Checks if the mouse is inside the entity's bounds
     if (dx < 0 || dx > size.x) return false;

@@ -31,7 +31,7 @@ public class Entity {
   }
 
   public void draw(SpriteBatch batch) {
-    float x = position.x;
+    float x = position.x - size.x / 2.0f;
     float y = position.y;
     batch.draw(texture, x, y);
   }
