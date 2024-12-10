@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class PlayerEntity extends Entity {
   private Vector2 movePos;
-  private final float SPEED = 48.0f;
+  private final float SPEED = 8 * 48.0f;
   private InteractEntity targetEntity;
   private boolean moving;
 
@@ -24,7 +24,7 @@ public class PlayerEntity extends Entity {
     // vel = |(movePos - position)| * (dt * SPEED)
     Vector2 delta = new Vector2(movePos).sub(position);
     if (moving) {
-      if (delta.len2() < 1.0f) {
+      if (delta.len2() < 8.0f) {
         moving = false;
         if (targetEntity != null) {
           targetEntity.interact();

@@ -11,6 +11,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import paradigmas.tfinal.PlayerEntity;
 import paradigmas.tfinal.InteractEntity;
+import paradigmas.tfinal.QuizEntity;
+import paradigmas.tfinal.Quiz;
 import paradigmas.tfinal.DialogueBox;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -54,7 +56,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
     dialogueBox = new DialogueBox();
     dialogueBox.setText("Hello, World!\nDialogue Box Test");
     Gdx.input.setInputProcessor(this);
-    tree = new InteractEntity(400, 200, dialogueBox);
+    String[] answers = {"1", "2", "3", "4"};
+
+    Quiz quiz = new Quiz("What is 1 + 1", answers, 2);
+    tree = new QuizEntity(400, 200, dialogueBox, quiz);
   }
 
   @Override
