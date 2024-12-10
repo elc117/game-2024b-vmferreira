@@ -15,15 +15,15 @@ public class PlayerEntity extends Entity {
     position = new Vector2(0, 0);
     movePos = new Vector2(0,0);
     texture = new Texture("player.png");
+    //size = new Vector2(texture.getWidth(), texture.getHeight());
     moving = false;
   }
   
   @Override
   public void update(float dt) {
-    // Move the player to the clicked position
-    // vel = |(movePos - position)| * (dt * SPEED)
     Vector2 delta = new Vector2(movePos).sub(position);
     if (moving) {
+      // if player is close to the target position, stop moving and interact with the entity
       if (delta.len2() < 8.0f) {
         moving = false;
         if (targetEntity != null) {
@@ -31,6 +31,7 @@ public class PlayerEntity extends Entity {
           targetEntity = null;
         }
       }
+      // Move the player to the clicked position
       delta.nor().scl(dt * SPEED);
       position.add(delta);
     }

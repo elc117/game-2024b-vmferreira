@@ -22,6 +22,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
   private Texture image;
   private FitViewport view;
   private DialogueBox dialogueBox;
+  private Vector2 touchPos;
 
   PlayerEntity player;
   InteractEntity tree;
@@ -46,15 +47,15 @@ public class Main extends ApplicationAdapter implements InputProcessor{
   public void create() {
     batch = new SpriteBatch();
     image = new Texture("libgdx.png");
-    Gdx.graphics.setWindowedMode(640, 480);
     player = new PlayerEntity();
     view = new FitViewport(640, 480);
+    touchPos = new Vector2(0, 0);
     dialogueBox = new DialogueBox();
     dialogueBox.setText("Hello, World!\nDialogue Box Test");
     Gdx.input.setInputProcessor(this);
     String[] answers = {"1", "2", "3", "4"};
 
-    Quiz quiz = new Quiz("What is 1 + 1\nextra text to make this\n quiz way bigger", answers, 2);
+    Quiz quiz = new Quiz("What is 1 + 1\nextra text to make this\n quiz way bigger", answers, 1);
     tree = new QuizEntity(400, 200, dialogueBox, quiz);
   }
   
@@ -78,16 +79,18 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 
   @Override
   public boolean touchDown(int screenX, int screenY, int ptr, int btn) {
-    Vector2 pos = new Vector2((float)screenX, (float)screenY);
-    view.unproject(pos);
+    touchPos.set((float)screenX, (float)screenY);
+    view.unproject(touchPos);
+    System.out.println(touchPos.x);
+    System.out.println(touchPos.y);
     if (dialogueBox.isEnabled()) {
-      dialogueBox.interact(pos.x, pos.y);
+      dialogueBox.interact(touchPos.x, touchPos.y);
       return true;
     }
-    if (tree.mouseOver(pos.x, pos.y)) {
+    if (tree.mouseOver(touchPos.x, touchPos.y)) {
       player.onClick(tree);
     } else {
-      player.onClick(pos.x, pos.y);
+      player.onClick(touchPos.x, touchPos.y);
     }
     return true;
   }

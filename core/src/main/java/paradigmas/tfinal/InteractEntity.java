@@ -7,15 +7,14 @@ import com.badlogic.gdx.graphics.Pixmap;
 
 public class InteractEntity extends Entity {
   private Vector2 interactOffset;
-  private Vector2 boundsMin, boundsMax;
+  private Vector2 boundsMin;
 
   public InteractEntity(float x, float y, DialogueBox dBox) {
     super(dBox);
     position.set(x, y);
     interactOffset = new Vector2(16, -4);
     texture = new Texture("tree.png");
-    boundsMin = new Vector2(0,0);
-    boundsMax = new Vector2(texture.getWidth(), texture.getHeight());
+    size = new Vector2(texture.getWidth(), texture.getHeight());
   }
 
   public Vector2 getInteractPos() {
@@ -23,11 +22,11 @@ public class InteractEntity extends Entity {
   }
 
   public boolean mouseOver(float mouseX, float mouseY) {
-    float dx = mouseX - position.x;
-    float dy = mouseY - position.y;
+    float dx = mouseX - (position.x);
+    float dy = mouseY - (position.y);
     // Checks if the mouse is inside the entity's bounds
-    if (dx < boundsMin.x || dx > boundsMax.x) return false;
-    if (dy < boundsMin.y || dy > boundsMax.y) return false;
+    if (dx < 0 || dx > size.x) return false;
+    if (dy < 0 || dy > size.y) return false;
     // Checks if the exact pixel at the mouse position is not transparent
     if (!texture.getTextureData().isPrepared()) {
       texture.getTextureData().prepare();

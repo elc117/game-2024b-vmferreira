@@ -33,6 +33,8 @@ public class DialogueBox {
   private SpriteBatch batch;
   private int state;
   private Quiz quiz;
+  private Vector2[] answerBoxesMin;
+  private Vector2[] answerBoxesMax;
   
   public DialogueBox() {
     shapeRenderer = new ShapeRenderer();
@@ -42,6 +44,12 @@ public class DialogueBox {
     font.setColor(Color.BLACK);
     layout = new GlyphLayout();
     batch = new SpriteBatch();
+    answerBoxesMin = new Vector2[4];
+    answerBoxesMax = new Vector2[4];
+    for (int i = 0; i < 4; i++) {
+      answerBoxesMin[i] = new Vector2(0,0);
+      answerBoxesMax[i] = new Vector2(0,0);
+    }
     state = STATE_DISABLED;
   }
 
@@ -55,6 +63,20 @@ public class DialogueBox {
   public void setQuiz(Quiz quiz) {
     this.quiz = quiz;
     state = STATE_QUIZ;
+
+    layout.setText(font, quiz.getQuestion());
+    float w = layout.width;
+    float h = layout.height;
+    float padding = 8;
+    float voff = 64;
+    float x = SCREEN_CENTER_X - w/2.0f - padding/2.0f;
+    float y = SCREEN_CENTER_Y - h/2.0f + padding/2.0f - 32.0f;
+    w += padding;
+    h += padding;
+    for (int i = 0; i < 4; i++) {
+      answerBoxesMin[i].set(x, y + 20*i);
+      answerBoxesMax[i].set(x + w, y + 20*i + 16);
+    }
   }
 
   public void drawText(Matrix4 proj) {
@@ -133,13 +155,28 @@ public class DialogueBox {
     state = STATE_DISABLED;
   }
 
+  public void quizClick(float mx, float my) {
+    for (int i = 0; i < 4; i++) {
+      boolean onX = mx >= answerBoxesMin[i].x && mx <= answerBoxesMax[i].x;
+      boolean onY = my >= answerBoxesMin[i].y && my <= answerBoxesMax[i].y;
+      if (onX && onY) {
+        if (quiz.checkAnswer(i)) {
+          setText("Correct Answer");
+        } else {
+          setText("Wrong Answer");
+        }
+        return;
+      }
+    }
+  }
+
   public void interact(float mx, float my) {
     if (state == STATE_TEXT) {
       disable();
       return;
     }
     if (state == STATE_QUIZ) {
-      disable();
+      quizClick(mx, my);
       return;
     }
   }
