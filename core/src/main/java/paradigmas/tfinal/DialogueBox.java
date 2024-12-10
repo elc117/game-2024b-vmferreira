@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-
+import com.badlogic.gdx.math.Matrix4;
 // Seria mais Orientado a Objetos se DialogueBox fosse
 // dividida em classes QuizBox e TextBox. Porém a funcionalidade
 // de TextBox seria mínima, e seria necessário uma constante
@@ -57,9 +57,10 @@ public class DialogueBox {
     state = STATE_QUIZ;
   }
 
-  public void drawText() {
+  public void drawText(Matrix4 proj) {
     float x = min.x;
     float y = min.y - size.y;
+    shapeRenderer.setProjectionMatrix(proj);
     shapeRenderer.begin(ShapeType.Filled);
     shapeRenderer.setColor(Color.WHITE);
     shapeRenderer.rect(x-2, y-2, size.x+4, size.y+4);
@@ -69,12 +70,13 @@ public class DialogueBox {
     shapeRenderer.rect(x, y, size.x, size.y);
     shapeRenderer.end();
 
+    batch.setProjectionMatrix(proj);
     batch.begin();
     font.draw(batch, layout, min.x+3, min.y-2);
     batch.end();
   }
 
-  public void drawQuiz() {
+  public void drawQuiz(Matrix4 proj) {
     layout.setText(font, quiz.getQuestion());
     float w = layout.width;
     float h = layout.height;
@@ -84,6 +86,7 @@ public class DialogueBox {
     float y = SCREEN_CENTER_Y - h/2.0f + padding/2.0f - 32.0f;
     w += padding;
     h += padding;
+    shapeRenderer.setProjectionMatrix(proj);
     shapeRenderer.begin(ShapeType.Filled);
     shapeRenderer.setColor(Color.WHITE);
     shapeRenderer.rect(x-2, y-2 + 80, w+4, h+4);
@@ -99,6 +102,7 @@ public class DialogueBox {
     }
     shapeRenderer.end();
 
+    batch.setProjectionMatrix(proj);
     batch.begin();
     font.draw(batch, layout, x + 3, y + h - 2 + 80);
     for (int i = 0; i < 4; i++) {
@@ -108,13 +112,13 @@ public class DialogueBox {
     batch.end();
   }
 
-  public void draw() {
+  public void draw(Matrix4 proj) {
     switch (state) {
       case STATE_TEXT:
-        drawText();
+        drawText(proj);
         break;
       case STATE_QUIZ:
-        drawQuiz();
+        drawQuiz(proj);
         break;
       default:
         return;
@@ -129,7 +133,7 @@ public class DialogueBox {
     state = STATE_DISABLED;
   }
 
-  public void interact(int mx, int my) {
+  public void interact(float mx, float my) {
     if (state == STATE_TEXT) {
       disable();
       return;

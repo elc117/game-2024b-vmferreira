@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.math.Vector2;
 import paradigmas.tfinal.PlayerEntity;
 import paradigmas.tfinal.InteractEntity;
 import paradigmas.tfinal.QuizEntity;
@@ -30,14 +31,14 @@ public class Main extends ApplicationAdapter implements InputProcessor{
   }
   private void draw() {
     ScreenUtils.clear(0.40f, 0.15f, 0.35f, 1f);
-    //view.apply();
-    //batch.setProjectionMatrix(view.getCamera().combined);
+    view.apply();
+    batch.setProjectionMatrix(view.getCamera().combined);
     batch.begin();
     tree.draw(batch);
     player.draw(batch);
     batch.end();
 
-    dialogueBox.draw();
+    dialogueBox.draw(view.getCamera().combined);
   }
 
 
@@ -56,6 +57,11 @@ public class Main extends ApplicationAdapter implements InputProcessor{
     Quiz quiz = new Quiz("What is 1 + 1\nextra text to make this\n quiz way bigger", answers, 2);
     tree = new QuizEntity(400, 200, dialogueBox, quiz);
   }
+  
+  @Override
+  public void resize(int width, int height) {
+      view.update(width, height, true);
+  }
 
   @Override
   public void render() {
@@ -72,14 +78,16 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 
   @Override
   public boolean touchDown(int screenX, int screenY, int ptr, int btn) {
+    Vector2 pos = new Vector2((float)screenX, (float)screenY);
+    view.unproject(pos);
     if (dialogueBox.isEnabled()) {
-      dialogueBox.interact(screenX, 480 - screenY);
+      dialogueBox.interact(pos.x, pos.y);
       return true;
     }
-    if (tree.mouseOver(screenX, 480 - screenY)) {
+    if (tree.mouseOver(pos.x, pos.y)) {
       player.onClick(tree);
     } else {
-      player.onClick((float)screenX, 480.0f - (float)screenY);
+      player.onClick(pos.x, pos.y);
     }
     return true;
   }
