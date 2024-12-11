@@ -31,7 +31,7 @@ public class InteractEntity extends Entity {
     }
     Pixmap pixmap = texture.getTextureData().consumePixmap();
     int tx = (int)dx;
-    int ty = (int)dy;
+    int ty = (int)(size.y - dy);
     return (pixmap.getPixel(tx, ty) & 0xff) == 0xff;
   }
 

@@ -1,0 +1,10 @@
+Qual o nome científico da planta "mil-folhas"?;Acacia mearnsii de Wild.;Agave americana L.;Achillea millefolium L.;Bromelia antiacantha Bertol.;2
+Qual dessas plantas tem origem^no Rio Grande do Sul?;butiá-da-serra;açafroa;chá-preto;castanheira;0
+Qual a origem da planta acácia-negra?;Europa;América do Sul;América do Norte;Austrália;3
+Qual a classificação da planta amoreira?;SAPINDACEAE;MORACEAE;ASTERACEAE;EUPHORBIACEAE;1
+O nome científico Cycas circinalis L.^se refere a qual planta?;sagueiro;citronela;sagu-de-madagascar;erva-caraó;2
+Qual desses não é um nome comum^da planta Euphorbia milii Des Moul.?;colchão-de-noiva;martírios;cega-olho;coroa-de-cristo;3
+Qual o nome científico da erva-mate?;Ixora coccinea;Ilex paraguariensis;Inga vera;Hymenaea courbaril;1
+Qual a classificação das plantas de hortelã?;MORACEAE;ANACARDIACEAE;LAMIACEAE;RUTACEAE;2
+Qual dessas plantas não tem origem na Argentina?;Ocotea acutifolia;Parapiptadenia rigida;Pfaffia glomerata;Opuntia cochenillifera;3
+Qual desses nomes é um nome^comum da planta Piptadenia gonoacantha?;lágrima-sabéia;falso-boldo;casca-de-jacaré;cinzeiro;2

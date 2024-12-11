@@ -1,0 +1,8 @@
+BACKGROUND;backgrounds/bg1.png;backgrounds/bg1_mask.png
+Quiz;400;280;
+Info;288;216;Jardim Botânico UFSM^Acesse jardimbotanicoufsm.github.io para^informações sobre o acervo;logoJardimBotanico.png
+Info;382;188;Escadas para o Telhado Verde^Colete todas as estrelas para subir;stairs.png
+Info;57;280;Plantas;plant.png
+Info;89;280;Plantas;plant.png
+Info;121;280;Plantas;plant.png
+Info;153;280;Plantas;plant.png

@@ -17,6 +17,10 @@ import paradigmas.tfinal.QuizEntity;
 import paradigmas.tfinal.InfoEntity;
 import paradigmas.tfinal.Quiz;
 import paradigmas.tfinal.DialogueBox;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Collections;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter implements InputProcessor{
@@ -26,7 +30,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
   private FitViewport view;
   private DialogueBox dialogueBox;
   private Vector2 touchPos;
-  private ArrayList<InteractEntity> props;
+  private Room room;
 
   PlayerEntity player;
 
@@ -38,10 +42,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
     view.apply();
     batch.setProjectionMatrix(view.getCamera().combined);
     batch.begin();
-    batch.draw(bg, 0, 0);
-    for (InteractEntity p : props) {
-      p.draw(batch);
-    }
+    room.draw(batch);
     player.draw(batch);
     batch.end();
 
@@ -61,17 +62,27 @@ public class Main extends ApplicationAdapter implements InputProcessor{
     dialogueBox.setText("Hello, World!\nDialogue Box Test");
     Gdx.input.setInputProcessor(this);
 
-    String[] answers = {"Acer Palmatum Thunb.", "Achillea millefolium L.", "Achyrocline Satureioides", "Agathis Robusta"};
-
-    Quiz quiz = new Quiz("Qual dessas plantas tem origem\nNo Japão, China e Coréia?", answers, 0);
-    props = new ArrayList<InteractEntity>();
-    props.add(new QuizEntity(400, 200, dialogueBox, quiz));
-    props.add(new InfoEntity(288, 480-216, dialogueBox, "Jardim Botânico UFSM", "logoJardimBotanico.png"));
-    props.add(new InfoEntity(382, 480-188, dialogueBox, "Escadas para o Telhado Verde\nColete todas as estrelas para subir", "stairs.png"));
-    props.add(new InfoEntity(57, 480-280, dialogueBox, "Plantas", "plant.png"));
-    props.add(new InfoEntity(57+32, 480-280, dialogueBox, "Plantas", "plant.png"));
-    props.add(new InfoEntity(57+64, 480-280, dialogueBox, "Plantas", "plant.png"));
-    props.add(new InfoEntity(57+96, 480-280, dialogueBox, "Plantas", "plant.png"));
+    ArrayList<Quiz> quizes = new ArrayList<Quiz>();
+    try {
+      BufferedReader br = new BufferedReader(new FileReader("quizes.txt"));
+      String line = br.readLine();
+      while (line != null) {
+        String[] tokens = line.split(";");
+        String[] answers = new String[4];
+        String question = tokens[0].replace('^', '\n');
+        int answer = Integer.parseInt(tokens[5]);
+        answers[0] = tokens[1];
+        answers[1] = tokens[2];
+        answers[2] = tokens[3];
+        answers[3] = tokens[4];
+        quizes.add(new Quiz(question, answers, answer));
+        line = br.readLine();
+      }
+      br.close();
+    } catch (Exception e) {
+      System.err.println(e);
+    }
+    room = new Room(quizes, dialogueBox, "rooms/room1.txt");
   }
   
   @Override
@@ -96,21 +107,11 @@ public class Main extends ApplicationAdapter implements InputProcessor{
   public boolean touchDown(int screenX, int screenY, int ptr, int btn) {
     touchPos.set((float)screenX, (float)screenY);
     view.unproject(touchPos);
-    System.out.println(touchPos.x);
-    System.out.println(touchPos.y);
     if (dialogueBox.isEnabled()) {
       dialogueBox.interact(touchPos.x, touchPos.y);
       return true;
     }
-    for (InteractEntity p : props) {
-      if (p.mouseOver(touchPos.x, touchPos.y)) {
-        player.onClick(p);
-        return true;
-      }
-    }
-    if (touchPos.y < 480-164) {
-      player.onClick(touchPos.x, touchPos.y);
-    }
+    room.onClick(player, touchPos.x, touchPos.y);
     return true;
   }
 
