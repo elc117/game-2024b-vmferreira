@@ -9,12 +9,10 @@ public class InteractEntity extends Entity {
   private Vector2 interactOffset;
   private Vector2 boundsMin;
 
-  public InteractEntity(float x, float y, DialogueBox dBox) {
-    super(dBox);
+  public InteractEntity(float x, float y, DialogueBox dBox, String t) {
+    super(dBox, t);
     position.set(x, y);
-    interactOffset = new Vector2(16, -4);
-    texture = new Texture("tree.png");
-    size = new Vector2(texture.getWidth(), texture.getHeight());
+    interactOffset = new Vector2(size.x * 1.0f/5.0f, -32.0f);
   }
 
   public Vector2 getInteractPos() {

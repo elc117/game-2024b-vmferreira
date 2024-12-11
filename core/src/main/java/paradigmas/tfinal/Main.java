@@ -1,5 +1,6 @@
 package paradigmas.tfinal;
 
+import java.util.ArrayList;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -21,12 +22,13 @@ import paradigmas.tfinal.DialogueBox;
 public class Main extends ApplicationAdapter implements InputProcessor{
   private SpriteBatch batch;
   private Texture image;
+  private Texture bg;
   private FitViewport view;
   private DialogueBox dialogueBox;
   private Vector2 touchPos;
+  private ArrayList<InteractEntity> props;
 
   PlayerEntity player;
-  InteractEntity tree;
 
   private void update(float dt) {
     player.update(dt);
@@ -36,7 +38,10 @@ public class Main extends ApplicationAdapter implements InputProcessor{
     view.apply();
     batch.setProjectionMatrix(view.getCamera().combined);
     batch.begin();
-    tree.draw(batch);
+    batch.draw(bg, 0, 0);
+    for (InteractEntity p : props) {
+      p.draw(batch);
+    }
     player.draw(batch);
     batch.end();
 
@@ -48,6 +53,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
   public void create() {
     batch = new SpriteBatch();
     image = new Texture("libgdx.png");
+    bg = new Texture("backgrounds/bg1.png");
     player = new PlayerEntity();
     view = new FitViewport(640, 480);
     touchPos = new Vector2(0, 0);
@@ -57,8 +63,15 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 
     String[] answers = {"Acer Palmatum Thunb.", "Achillea millefolium L.", "Achyrocline Satureioides", "Agathis Robusta"};
 
-    Quiz quiz = new Quiz("Qual dessas plantas tem origem\nNo Capão, China e Coréia?", answers, 0);
-    tree = new QuizEntity(400, 200, dialogueBox, quiz);
+    Quiz quiz = new Quiz("Qual dessas plantas tem origem\nNo Japão, China e Coréia?", answers, 0);
+    props = new ArrayList<InteractEntity>();
+    props.add(new QuizEntity(400, 200, dialogueBox, quiz));
+    props.add(new InfoEntity(288, 480-216, dialogueBox, "Jardim Botânico UFSM", "logoJardimBotanico.png"));
+    props.add(new InfoEntity(382, 480-188, dialogueBox, "Escadas para o Telhado Verde\nColete todas as estrelas para subir", "stairs.png"));
+    props.add(new InfoEntity(57, 480-280, dialogueBox, "Plantas", "plant.png"));
+    props.add(new InfoEntity(57+32, 480-280, dialogueBox, "Plantas", "plant.png"));
+    props.add(new InfoEntity(57+64, 480-280, dialogueBox, "Plantas", "plant.png"));
+    props.add(new InfoEntity(57+96, 480-280, dialogueBox, "Plantas", "plant.png"));
   }
   
   @Override
@@ -89,9 +102,13 @@ public class Main extends ApplicationAdapter implements InputProcessor{
       dialogueBox.interact(touchPos.x, touchPos.y);
       return true;
     }
-    if (tree.mouseOver(touchPos.x, touchPos.y)) {
-      player.onClick(tree);
-    } else {
+    for (InteractEntity p : props) {
+      if (p.mouseOver(touchPos.x, touchPos.y)) {
+        player.onClick(p);
+        return true;
+      }
+    }
+    if (touchPos.y < 480-164) {
       player.onClick(touchPos.x, touchPos.y);
     }
     return true;

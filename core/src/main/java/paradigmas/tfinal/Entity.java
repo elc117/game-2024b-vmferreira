@@ -10,11 +10,11 @@ public class Entity {
   protected DialogueBox dialogueBox;
   protected Vector2 size;
 
-  public Entity(DialogueBox dBox) {
+  public Entity(DialogueBox dBox, String t) {
     position = new Vector2(0, 0);
-    texture = new Texture("libgdx.png");
+    texture = new Texture(t);
     dialogueBox = dBox;
-    size = new Vector2(32, 32);
+    size = new Vector2(texture.getWidth(), texture.getHeight());
   }
   public Entity() {
     position = new Vector2(0, 0);
