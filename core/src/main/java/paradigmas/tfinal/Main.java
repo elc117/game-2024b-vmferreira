@@ -82,6 +82,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
     } catch (Exception e) {
       System.err.println(e);
     }
+    Collections.shuffle(quizes);
     room = new Room(quizes, dialogueBox, "rooms/room1.txt");
   }
   

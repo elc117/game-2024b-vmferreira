@@ -44,7 +44,6 @@ public class Room {
           entitiesData.add(tokens[3].replace('^', '\n'));
           entityTypes.add(0);
           numEntities++;
-          System.out.println("info");
         } else if (tokens[0].equals("Quiz")) {
           entitiesX.add(Integer.parseInt(tokens[1]));
           entitiesY.add(Integer.parseInt(tokens[2]));
