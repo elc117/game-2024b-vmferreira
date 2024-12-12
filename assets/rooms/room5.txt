@@ -1,0 +1,4 @@
+BACKGROUND;backgrounds/bg5.png;backgrounds/bg5_mask.png
+Quiz;162;350;
+Info;460;351;Jardim Sensorial!;jardimsensorial.png
+Move;30;385;2,610,385

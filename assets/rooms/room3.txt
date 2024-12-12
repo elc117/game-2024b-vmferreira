@@ -1,0 +1,6 @@
+BACKGROUND;backgrounds/bg3.png;backgrounds/bg3_mask.png
+Quiz;367;341;
+Info;394;415;Horta Mandala;horta.png
+Move;300;252;3,300,460
+Move;15;250;1,600,250
+Move;610;385;4,30,385

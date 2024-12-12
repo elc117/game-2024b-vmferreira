@@ -11,33 +11,43 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.files.FileHandle;
 import paradigmas.tfinal.PlayerEntity;
 import paradigmas.tfinal.InteractEntity;
 import paradigmas.tfinal.QuizEntity;
 import paradigmas.tfinal.InfoEntity;
 import paradigmas.tfinal.Quiz;
 import paradigmas.tfinal.DialogueBox;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Collections;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter implements InputProcessor{
   private SpriteBatch batch;
-  private Texture image;
-  private Texture bg;
   private FitViewport view;
   private DialogueBox dialogueBox;
   private Vector2 touchPos;
   private Room room;
-
-  PlayerEntity player;
+  private Room[] rooms;
+  private Texture telhadoVerdeBG;
+  private boolean done;
+  private PlayerEntity player;
+  private int nQuizesDone = 0;
 
   private void update(float dt) {
+    if (done) return;
     player.update(dt);
   }
   private void draw() {
+    if (done) {
+      ScreenUtils.clear(0.40f, 0.15f, 0.35f, 1f);
+      view.apply();
+      batch.setProjectionMatrix(view.getCamera().combined);
+      batch.begin();
+      batch.draw(telhadoVerdeBG, 0, 0, 640, 480);
+      batch.end();
+      dialogueBox.draw(view.getCamera().combined);
+      return;
+    }
     ScreenUtils.clear(0.40f, 0.15f, 0.35f, 1f);
     view.apply();
     batch.setProjectionMatrix(view.getCamera().combined);
@@ -52,38 +62,47 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 
   @Override
   public void create() {
+    done = false;
     batch = new SpriteBatch();
-    image = new Texture("libgdx.png");
-    bg = new Texture("backgrounds/bg1.png");
     player = new PlayerEntity();
     view = new FitViewport(640, 480);
     touchPos = new Vector2(0, 0);
+    telhadoVerdeBG = new Texture("backgrounds/telhadoVerde.png");
     dialogueBox = new DialogueBox();
-    dialogueBox.setText("Hello, World!\nDialogue Box Test");
+    dialogueBox.setText("Bem Vindo a\nJardim Botânico Quest\nResponda todos os quizes\npara poder subir\nao Telhado Verde");
     Gdx.input.setInputProcessor(this);
 
+    FileHandle handle = Gdx.files.internal("quizes.txt");
+    String[] lines = handle.readString().split("\n");
     ArrayList<Quiz> quizes = new ArrayList<Quiz>();
-    try {
-      BufferedReader br = new BufferedReader(new FileReader("quizes.txt"));
-      String line = br.readLine();
-      while (line != null) {
-        String[] tokens = line.split(";");
-        String[] answers = new String[4];
-        String question = tokens[0].replace('^', '\n');
-        int answer = Integer.parseInt(tokens[5]);
-        answers[0] = tokens[1];
-        answers[1] = tokens[2];
-        answers[2] = tokens[3];
-        answers[3] = tokens[4];
-        quizes.add(new Quiz(question, answers, answer));
-        line = br.readLine();
-      }
-      br.close();
-    } catch (Exception e) {
-      System.err.println(e);
+    for (String line : lines) {
+      String[] tokens = line.split(";");
+      String[] answers = new String[4];
+      String question = tokens[0].replace('^', '\n');
+      int answer = Integer.parseInt(tokens[5]);
+      answers[0] = tokens[1];
+      answers[1] = tokens[2];
+      answers[2] = tokens[3];
+      answers[3] = tokens[4];
+      quizes.add(new Quiz(question, answers, answer));
     }
     Collections.shuffle(quizes);
-    room = new Room(quizes, dialogueBox, "rooms/room1.txt");
+    rooms = new Room[5];
+    rooms[0] = new Room(quizes, this, dialogueBox, "rooms/room1.txt");
+    rooms[1] = new Room(quizes, this, dialogueBox, "rooms/room2.txt");
+    rooms[2] = new Room(quizes, this, dialogueBox, "rooms/room3.txt");
+    rooms[3] = new Room(quizes, this, dialogueBox, "rooms/room4.txt");
+    rooms[4] = new Room(quizes, this, dialogueBox, "rooms/room5.txt");
+    room = rooms[0];
+  }
+
+  public void travel(int r, float nx, float ny) {
+    room = rooms[r];
+    player.setPos(nx, 480-ny);
+    if (nQuizesDone == 5) {
+      dialogueBox.setText("Você terminou Jardim Botânico Quest!");
+      done = true;
+    }
   }
   
   @Override
@@ -101,7 +120,6 @@ public class Main extends ApplicationAdapter implements InputProcessor{
   @Override
   public void dispose() {
     batch.dispose();
-    image.dispose();
   }
 
   @Override
@@ -109,7 +127,12 @@ public class Main extends ApplicationAdapter implements InputProcessor{
     touchPos.set((float)screenX, (float)screenY);
     view.unproject(touchPos);
     if (dialogueBox.isEnabled()) {
-      dialogueBox.interact(touchPos.x, touchPos.y);
+      if (dialogueBox.interact(touchPos.x, touchPos.y)) {
+        nQuizesDone++;
+        if (nQuizesDone == 5) {
+          dialogueBox.setText("Você respondeu todos os quizes!");
+        }
+      }
       return true;
     }
     room.onClick(player, touchPos.x, touchPos.y);

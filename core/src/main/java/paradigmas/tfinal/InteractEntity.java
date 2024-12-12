@@ -1,6 +1,7 @@
 package paradigmas.tfinal;
 
 import paradigmas.tfinal.Entity;
+import paradigmas.tfinal.Main;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 public class InteractEntity extends Entity {
   private Vector2 interactOffset;
   private Vector2 boundsMin;
+  private Main mainGame;
 
   public InteractEntity(float x, float y, DialogueBox dBox, String t) {
     super(dBox, t);
@@ -20,6 +22,7 @@ public class InteractEntity extends Entity {
   }
 
   public boolean mouseOver(float mouseX, float mouseY) {
+    if (!enabled) return false;
     float dx = mouseX - (position.x - size.x/2.0f);
     float dy = mouseY - (position.y);
     // Checks if the mouse is inside the entity's bounds

@@ -6,3 +6,4 @@ Info;57;280;Plantas;plant.png
 Info;89;280;Plantas;plant.png
 Info;121;280;Plantas;plant.png
 Info;153;280;Plantas;plant.png
+Move;615;332;1,35,332

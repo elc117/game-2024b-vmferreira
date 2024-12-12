@@ -1,0 +1,5 @@
+BACKGROUND;backgrounds/bg2.png;backgrounds/bg2_mask.png
+Quiz;320;210;
+Info;150;302;Arvóres!;trees.png
+Move;35;332;0,615,332
+Move;600;250;2,15,250

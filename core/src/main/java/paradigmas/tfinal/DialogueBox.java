@@ -32,6 +32,7 @@ public class DialogueBox {
   private GlyphLayout layout;
   private SpriteBatch batch;
   private int state;
+  private QuizEntity quize;
   private Quiz quiz;
   private Vector2[] answerBoxesMin;
   private Vector2[] answerBoxesMax;
@@ -60,8 +61,9 @@ public class DialogueBox {
     state = STATE_TEXT;
   }
 
-  public void setQuiz(Quiz quiz) {
-    this.quiz = quiz;
+  public void setQuiz(QuizEntity quize) {
+    this.quize = quize;
+    this.quiz = quize.getQuiz();
     state = STATE_QUIZ;
 
     layout.setText(font, quiz.getQuestion());
@@ -155,29 +157,32 @@ public class DialogueBox {
     state = STATE_DISABLED;
   }
 
-  public void quizClick(float mx, float my) {
+  public boolean quizClick(float mx, float my) {
     for (int i = 0; i < 4; i++) {
       boolean onX = mx >= answerBoxesMin[i].x && mx <= answerBoxesMax[i].x;
       boolean onY = my >= answerBoxesMin[i].y && my <= answerBoxesMax[i].y;
       if (onX && onY) {
         if (quiz.checkAnswer(i)) {
           setText("Correct Answer");
+          quize.disable();
+          return true;
         } else {
           setText("Wrong Answer");
+          return false;
         }
-        return;
       }
     }
+    return false;
   }
 
-  public void interact(float mx, float my) {
+  public boolean interact(float mx, float my) {
     if (state == STATE_TEXT) {
       disable();
-      return;
+      return false;
     }
     if (state == STATE_QUIZ) {
-      quizClick(mx, my);
-      return;
+      return quizClick(mx, my);
     }
+    return false;
   }
 }
